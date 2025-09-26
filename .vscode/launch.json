@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: App",
+      "type": "python",
+      "request": "launch",
+      "program": "${file}",                 // 현재 파일 실행
+      "cwd": "${workspaceFolder}",          // CWD를 워크스페이스 루트로 고정
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"  // src 레이아웃 지원
+      },
+      "envFile": "${workspaceFolder}/.env"  // .env 로드
+    }
+  ]
+}

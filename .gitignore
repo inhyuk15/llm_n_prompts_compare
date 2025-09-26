@@ -246,7 +246,7 @@ poetry.toml
 pyrightconfig.json
 
 ### VisualStudioCode ###
-.vscode/*
+# .vscode/*
 
 # Local History for Visual Studio Code
 .history/
