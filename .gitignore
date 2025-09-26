@@ -291,3 +291,6 @@ $RECYCLE.BIN/
 reports/
 
 nuitka-crash-report.xml
+
+eval_pipe
+gen_pipe
