@@ -12,8 +12,8 @@ class PipeEvaluator:
             assert False, "no stage in evaluation"
         
         for s in stages:
-            applied = [t.prompt_name for t in stages[: s.step]]
-            md = self.evaluator.invoke(applied, s.code, user_msg='')
+            applied = [s.prompt_name]
+            md = self.evaluator.invoke(applied, s.code)
             yield StageEvalResult(step=s.step, prompt_name=s.prompt_name, evaluation=md)
             
             
