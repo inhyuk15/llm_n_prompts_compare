@@ -14,7 +14,7 @@ def main():
     """
 
 
-    apply_prompts = ['p1', 'p2']
+    apply_prompts = ['p1', 'p2', 'p3']
     print('code generation...')
     agent = Agent()
     code = agent.invoke(apply_prompts, user_msg)

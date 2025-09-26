@@ -25,10 +25,8 @@ def build_human_prompt(state: State) -> str:
     code = state['code']
 
     return (
-        "[RULES]\n"
+        "[GUIDELINES]\n"
         f"{rules_text}\n\n"
-        "[USER]\n"
-        f"{user_msg}\n\n"
         "[CODE]\n"
         "```c\n"
         f"{code}\n"
