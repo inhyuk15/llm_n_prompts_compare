@@ -1,6 +1,7 @@
 
 from agent import Agent
 from evaluation import Evaluator
+from pipe_agent import PipeAgent
 
 code_file = 'output.c'
 eval_file = 'eval.md'
@@ -16,7 +17,8 @@ def main():
 
     apply_prompts = ['p1', 'p2', 'p3']
     print('code generation...')
-    agent = Agent()
+    # agent = Agent()
+    agent = PipeAgent()
     code = agent.invoke(apply_prompts, user_msg)
     with open(code_file, 'w', encoding='utf-8') as f:
         f.write(code)
