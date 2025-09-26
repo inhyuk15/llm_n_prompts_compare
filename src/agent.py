@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Union
 from models import qwen_model, gpt_model
 from typing_extensions import TypedDict
-from langchain_core.prompts import ChatPromptTemplate
 from langgraph.graph import StateGraph, START, END
+
+from util.prompt_util import make_prompt
 
 #------------- prompt
 @dataclass
@@ -20,23 +20,10 @@ prompts: list[PromptEntry]  = [
     PromptEntry('p5', 'safty rule for interrupts and sync,hronization'),
     PromptEntry('p6', 'structured error handling'),
     PromptEntry('p7', 'code documentation and annotation'),
+    PromptEntry('p8', 'consistency for naming conventions and formatting'),
 ]
 
 PROMPT_INDEX:dict[str, PromptEntry] = {p.prompt_name: p for p in prompts}
-
-
-def load_system_prompt(name: str) -> str:
-    return Path(f'prompts/{name}.md').read_text(encoding='utf-8')
-    
-def make_prompt(sys_prompts: list[PromptEntry], user_msg: str) -> ChatPromptTemplate:
-    merged_sys_prompt = '\n'.join(
-        load_system_prompt(prompt.prompt_name) for prompt in sys_prompts
-    )
-    merged_sys_prompt += '\nyou must return only code. and code must be c language.'
-    return ChatPromptTemplate.from_messages([
-        ('system', merged_sys_prompt),
-        ('user', user_msg),
-    ])
 
 
 #------------- agent
