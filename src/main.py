@@ -18,7 +18,7 @@ def main():
     Free RTOS를 사용하세요.
     """
 
-    apply_prompts = ['p1', 'p2', 'p3']
+    apply_prompts = ['p0', 'p1', 'p2', 'p3']
     # apply_prompts = ['p1']
     print('code generation...')
     # agent = Agent()
@@ -43,7 +43,7 @@ def main():
     eval_out_dir = Path(eval_pipe_dir)
     eval_out_dir.mkdir(parents=True, exist_ok=True)
     
-    eval_stages = list(evaluator.invoke_yield(stages))
+    eval_stages = list(evaluator.invoke_yield(stages[1:]))
     for es in eval_stages:
         eval_output_name = f'out_step{es.step}_{es.prompt_name}.md'
         (eval_out_dir / eval_output_name).write_text(es.evaluation, encoding='utf-8')

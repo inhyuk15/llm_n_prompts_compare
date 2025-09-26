@@ -29,6 +29,13 @@ Fail: Y
 Review: Z
 Compliance Rate: (X / N * 100) %
 
+Counting Rules:
+- Total items MUST equal the number of unique guideline elements parsed from [GUIDELINES].
+- Each guideline ID (e.g., "Rule 10.3") is counted only once, even if mentioned multiple times. Evidence may be merged, but the item count remains 1.
+- The sum of Pass + Fail + Review MUST exactly match Total items. If not, the report is INVALID.
+- Compliance Rate = (Pass ÷ Total items) × 100, rounded to two decimal places.
+- Any guideline element listed in [GUIDELINES] but not evaluated MUST be marked as "REVIEW REQUIRED" and included in the count.
+
 2) COMPLIANCE MATRIX  
 For each guideline item, fill the table below:
 

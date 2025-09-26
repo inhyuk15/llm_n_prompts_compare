@@ -91,7 +91,7 @@ class PipeAgent():
         names = [prompt_names] if isinstance(prompt_names, str) else list(prompt_names)
         code = ""
         
-        for step, pname in enumerate(names, start=1):
+        for step, pname in enumerate(names, start=0):
             system_text = load_system_prompt(pname)
             if code.strip() == "":
                 prompt = build_generation_prompt(system_text, user_msg)
