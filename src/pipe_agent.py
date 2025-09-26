@@ -91,6 +91,7 @@ class PipeAgent():
         names = [prompt_names] if isinstance(prompt_names, str) else list(prompt_names)
         code = ""
         
+        # code_gen: bool = False
         for step, pname in enumerate(names, start=0):
             system_text = load_system_prompt(pname)
             if code.strip() == "":
@@ -100,6 +101,10 @@ class PipeAgent():
             
             msg = (prompt | self.llm).invoke({})
             code = _extract_code_only(msg.content)
+            # # 처음 만든 코드를 계속 이용.
+            # if not code_gen:
+            #     code = _extract_code_only(msg.content)
+            #     code_gen = True
             
             # yield step, pname, code
             yield StageResult(step=step, prompt_name=pname, system_prompt=system_text, code=code)
