@@ -8,6 +8,7 @@ from typing import Iterator
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from models import gpt_model
+from util.pipe_types import StageResult
 from util.prompt_util import load_system_prompt, build_generation_prompt, build_refine_prompt
 
 class PipeState(TypedDict):
@@ -86,11 +87,11 @@ class PipeAgent():
         return out['code']
 
 # ------- graph 생성 없이 매번 llm 호출.
-    def invoke_yield(self, prompt_names: str | list[str], user_msg: str = '') -> Iterator[tuple[int, str, str]]:
+    def invoke_yield(self, prompt_names: str | list[str], user_msg: str = '') -> Iterator[StageResult]:
         names = [prompt_names] if isinstance(prompt_names, str) else list(prompt_names)
         code = ""
         
-        for idx, pname in enumerate(names):
+        for step, pname in enumerate(names, start=1):
             system_text = load_system_prompt(pname)
             if code.strip() == "":
                 prompt = build_generation_prompt(system_text, user_msg)
@@ -100,4 +101,5 @@ class PipeAgent():
             msg = (prompt | self.llm).invoke({})
             code = _extract_code_only(msg.content)
             
-            yield idx, pname, code
+            # yield step, pname, code
+            yield StageResult(step=step, prompt_name=pname, system_prompt=system_text, code=code)
