@@ -1,24 +1,12 @@
 from pathlib import Path
-
-from agent import PromptEntry
-from pipe_agent import RAW_END, RAW_START
-
 from langchain_core.prompts import ChatPromptTemplate
 
 
 def load_system_prompt(name: str) -> str:
     return Path(f'prompts/{name}.md').read_text(encoding='utf-8')
 
-
-def make_prompt(sys_prompts: list[PromptEntry], user_msg: str) -> ChatPromptTemplate:
-    merged_sys_prompt = '\n'.join(
-        load_system_prompt(prompt.prompt_name) for prompt in sys_prompts
-    )
-    merged_sys += "\nReturn only C code. Do not include explanations or comments outside code blocks."
-    return ChatPromptTemplate.from_messages([
-        ('system', merged_sys_prompt),
-        ('user', user_msg),
-    ])
+RAW_START = "{% raw %}"
+RAW_END = "{% endraw %}"
     
 def build_generation_prompt(system_text: str, user_msg: str) -> ChatPromptTemplate:
     """

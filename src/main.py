@@ -1,10 +1,12 @@
 
+from pathlib import Path
 from agent import Agent
 from evaluation import Evaluator
 from pipe_agent import PipeAgent
 
 code_file = 'output.c'
 eval_file = 'eval.md'
+pipe_dir = 'pipe'
 
 def main():
     user_msg = """
@@ -19,9 +21,15 @@ def main():
     print('code generation...')
     # agent = Agent()
     agent = PipeAgent()
-    code = agent.invoke(apply_prompts, user_msg)
-    with open(code_file, 'w', encoding='utf-8') as f:
-        f.write(code)
+    # code = agent.invoke(apply_prompts, user_msg)
+    # with open(code_file, 'w', encoding='utf-8') as f:
+    #     f.write(code)
+    out_dir  = Path(pipe_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    for step, pname, code in agent.invoke_yield(apply_prompts, user_msg):
+        file_path = out_dir / (f"out_step{step}_{pname}.c")
+        file_path.write_text(code, encoding="utf-8")
+        print(f'[saved] {file_path}')
     
     print('evaluation...')
     evaluator = Evaluator()
