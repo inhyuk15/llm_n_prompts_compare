@@ -4,16 +4,14 @@
 각 단계의 결과물을 yield로 반환.
 """
 
+from typing import Iterator
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
 from models import gpt_model
 from util.prompt_util import load_system_prompt, build_generation_prompt, build_refine_prompt
 
-RAW_START = "{% raw %}"
-RAW_END = "{% endraw %}"
-
 class PipeState(TypedDict):
-    prompt_nams: list[str]
+    prompt_names: list[str]
     user_msg: str
     code: str
     step: int
@@ -86,3 +84,20 @@ class PipeAgent():
         })
 
         return out['code']
+
+# ------- graph 생성 없이 매번 llm 호출.
+    def invoke_yield(self, prompt_names: str | list[str], user_msg: str = '') -> Iterator[tuple[int, str, str]]:
+        names = [prompt_names] if isinstance(prompt_names, str) else list(prompt_names)
+        code = ""
+        
+        for idx, pname in enumerate(names):
+            system_text = load_system_prompt(pname)
+            if code.strip() == "":
+                prompt = build_generation_prompt(system_text, user_msg)
+            else:
+                prompt = build_refine_prompt(system_text, code)
+            
+            msg = (prompt | self.llm).invoke({})
+            code = _extract_code_only(msg.content)
+            
+            yield idx, pname, code
