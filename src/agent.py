@@ -32,7 +32,7 @@ def make_prompt(sys_prompts: list[PromptEntry], user_msg: str) -> ChatPromptTemp
     merged_sys_prompt = '\n'.join(
         load_system_prompt(prompt.prompt_name) for prompt in sys_prompts
     )
-    merged_sys_prompt += '\nyou must return only code.'
+    merged_sys_prompt += '\nyou must return only code. and code must be c language.'
     return ChatPromptTemplate.from_messages([
         ('system', merged_sys_prompt),
         ('user', user_msg),
@@ -44,7 +44,6 @@ class State(TypedDict):
     prompt_names: list[str]
     user_msg: str
     response: str
-    
 
 
 class Agent():
@@ -68,7 +67,7 @@ class Agent():
         return {'response': msg.content}
     
     
-    def invoke(self, prompt_names: Union[str, list[str]], user_msg: str = '') -> str:
+    def invoke(self, prompt_names: str | list[str], user_msg: str = '') -> str:
         prompt_names = [prompt_names] if isinstance(prompt_names, str) else list(prompt_names)
         out = self.chain.invoke({'prompt_names': prompt_names, 'user_msg': user_msg})
         return out['response']

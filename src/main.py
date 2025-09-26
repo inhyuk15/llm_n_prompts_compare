@@ -1,6 +1,9 @@
 
 from agent import Agent
+from evaluation import Evaluator
 
+code_file = 'output.c'
+eval_file = 'eval.md'
 
 def main():
     user_msg = """
@@ -10,9 +13,21 @@ def main():
     Free RTOS를 사용하세요.
     """
 
+
+    apply_prompts = ['p1', 'p2']
+    print('code generation...')
     agent = Agent()
-    result = agent.invoke(['p1', 'p2'], user_msg)
-    print(result)
+    code = agent.invoke(apply_prompts, user_msg)
+    with open(code_file, 'w', encoding='utf-8') as f:
+        f.write(code)
+    
+    print('evaluation...')
+    evaluator = Evaluator()
+    result = evaluator.invoke(apply_prompts, code, user_msg)
+    with open(eval_file, 'w', encoding='utf-8') as f:
+        f.write(result)
+    
+    
 
 if __name__ == '__main__':
     main()

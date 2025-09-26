@@ -9,7 +9,7 @@ qwen_model = ChatOpenAI(
 )
 
 gpt_model = ChatOpenAI(
-    model='gpt-4.1',
+    model='gpt-4.1-mini',
     openai_api_base="https://api.openai.com/v1",
     openai_api_key=settings.openai_api_key,
 )
