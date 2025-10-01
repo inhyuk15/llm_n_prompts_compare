@@ -7,7 +7,7 @@
 from typing import Iterator
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
-from models import gpt_model
+from models import gpt_model, qwen_model
 from util.pipe_types import StageResult
 from util.prompt_util import load_system_prompt, build_generation_prompt, build_refine_prompt
 
@@ -35,7 +35,8 @@ def _extract_code_only(text: str) -> str:
 
 class PipeAgent():
     def __init__(self):
-        self.llm = gpt_model
+        # self.llm = gpt_model
+        self.llm = qwen_model
         
     def _make_graph(self, prompt_names: str | list[str]):
         graph = StateGraph(PipeState)
